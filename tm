@@ -111,9 +111,11 @@ def build_plan(tasks, graph):
                 to_process.add(u)
 
     print("    \033[33mSuggested plan:\033[0m")
+    i = 0
     for item in plan:
         if not is_task_done(item, tasks):
-            print("      *", item)
+            i += 1
+            print(f"      {i}.", item)
     return plan
 
 
