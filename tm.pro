@@ -27,6 +27,7 @@ Color the task according to the done key
 task6: write down documentation
 maybe it's too early 
 :key:value
+:depends_on:task10,task7
 
 task7: syntax highlight
 It would be nice to develop some sort of editor and have syntax highlight.
@@ -43,3 +44,12 @@ It would be nice to read project file from same dir as script
 task10: model tasks as a graph
 It would be nice to provide a topological sorting of tasks, so it can suggest
 a plan of execution.
+:depends_on:task12
+
+task11: task to test topological sort
+This is a dummy task to test the topological sorting algorithm.
+:depends_on: task10
+
+task12: build graph based on depends_on key
+Task to finish before task10
+:done:

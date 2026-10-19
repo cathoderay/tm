@@ -67,6 +67,28 @@ def list_tasks():
                     print("\033[96m" + task[key] + "\033[0m", end="")
 
         print("\n")
+ 
+    return tasks
 
 
-list_tasks()
+def build_graph(tasks):
+    graph = { task["id"]: [] for task in tasks }
+    for task in tasks:
+        _id = task["id"]
+        dependencies = task["depends_on"].strip().split(",") if "depends_on" in task else []
+        for dependency in dependencies:
+            graph[dependency].append(_id)
+    return graph
+
+
+def build_plan(graph):
+    nodes = graph.keys()
+    # todo: implement topological sorting algorithm
+
+
+tasks = list_tasks()
+
+graph = build_graph(tasks)
+print(graph)
+
+plan = build_plan(graph)
