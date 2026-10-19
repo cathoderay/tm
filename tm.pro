@@ -48,7 +48,7 @@ a plan of execution.
 
 task11: task to test topological sort
 This is a dummy task to test the topological sorting algorithm.
-:depends_on: task10
+:depends_on:task10
 
 task12: build graph based on depends_on key
 Task to finish before task10
