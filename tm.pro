@@ -45,10 +45,12 @@ task10: model tasks as a graph
 It would be nice to provide a topological sorting of tasks, so it can suggest
 a plan of execution.
 :depends_on:task12
+:done:
 
 task11: task to test topological sort
 This is a dummy task to test the topological sorting algorithm.
 :depends_on:task10
+:done:
 
 task12: build graph based on depends_on key
 Task to finish before task10

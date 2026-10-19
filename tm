@@ -71,6 +71,12 @@ def list_tasks():
     return tasks
 
 
+def is_task_done(_id, tasks):
+    for task in tasks:
+        if task["id"] == _id:
+            return "done" in task
+
+
 def build_graph(tasks):
     graph = { task["id"]: [] for task in tasks }
     for task in tasks:
@@ -81,14 +87,36 @@ def build_graph(tasks):
     return graph
 
 
-def build_plan(graph):
+def build_plan(tasks, graph):
     nodes = graph.keys()
-    # todo: implement topological sorting algorithm
+
+    in_degrees = {node: 0 for node in nodes}
+    to_process = set()
+    for node in graph:
+        for u in graph[node]:
+            in_degrees[u] += 1
+
+    for node in in_degrees:
+        if in_degrees[node] == 0:
+            to_process.add(node)
+
+    plan = []
+
+    while to_process:
+        node = to_process.pop()
+        plan.append(node)
+        for u in graph[node]:
+            in_degrees[u] -= 1
+            if in_degrees[u] == 0:
+                to_process.add(u)
+
+    print("    \033[33mSuggested plan:\033[0m")
+    for item in plan:
+        if not is_task_done(item, tasks):
+            print("      *", item)
+    return plan
 
 
 tasks = list_tasks()
-
 graph = build_graph(tasks)
-print(graph)
-
-plan = build_plan(graph)
+plan = build_plan(tasks, graph)
