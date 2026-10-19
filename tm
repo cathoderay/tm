@@ -21,14 +21,17 @@
     
     There's a special key called :done: that you can assign any value.
     When you run tm, it will properly highlight tasks without this key.
-    This way you can easily peep through all your to-do tasks and find
+    This way you can easily identify all your to-do tasks and find
     new ones to work on.
 """
 
+import os
+
 
 def list_tasks():
-    project_path = "./tm.pro"
-    f = open(project_path)
+    file_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = file_dir + "/tm.pro"
+    f = open(file_path)
     tasks = []
     cur = ""
     for line in f.readlines():

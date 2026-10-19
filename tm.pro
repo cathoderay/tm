@@ -35,3 +35,7 @@ Not sure if it's worth the time, though.
 task8: make list option the default
 instead of running like: ./tm list, let's make the list option the default
 :done:
+
+task9: read tm.pro script dir
+It would be nice to read project file from same dir as script
+:done:
