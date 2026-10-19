@@ -39,3 +39,7 @@ instead of running like: ./tm list, let's make the list option the default
 task9: read tm.pro script dir
 It would be nice to read project file from same dir as script
 :done:
+
+task10: model tasks as a graph
+It would be nice to provide a topological sorting of tasks, so it can suggest
+a plan of execution.
