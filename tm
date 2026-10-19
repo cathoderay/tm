@@ -1,0 +1,69 @@
+#!/usr/bin/env python3
+
+"""
+    tm - task manager
+
+    author: Ronald Kaiser
+    date: Oct 18, 2026
+
+    This is a piece of code that prints your .pro file with highlights.
+    The idea is to write down the tasks of a project
+    in a .pro file.
+
+    The tasks should start with the following format:
+        task1: short description
+        Multiline description
+    
+    After the description you can put some key value pairs, e.g.:
+        task1: short description
+        Multiline description
+        key:value
+    
+    There's a special key called :done: that you can assign any value.
+    When you run tm, it will properly highlight tasks without this key.
+    This way you can easily peep through all your to-do tasks and find
+    new ones to work on.
+"""
+
+
+def list_tasks():
+    project_path = "./tm.pro"
+    f = open(project_path)
+    tasks = []
+    cur = ""
+    for line in f.readlines():
+        if len(line) > 1 and not cur:
+            cur, name = line.split(":")
+            tasks.append({"id": cur, "name": name.strip(), "description": []})
+            continue
+
+        if len(line) > 1:
+            if line.startswith(":"):
+                _, key, value = line.split(":")
+                tasks[-1][key] = value
+            else:
+                tasks[-1]["description"].append(line)
+        else:
+            cur = ""
+
+    for task in tasks:
+        if "done" in task:
+            a, b = 90, 90
+        else:
+            a, b = 32, 92
+        print(f"    \033[{a}m[" + task["id"] + "]\033[0m" + ": ",  end="")
+        print(f"\033[{b}m" + task["name"] + "\033[0m")
+
+        for line in task["description"]:
+            print("    ", line, end="")
+
+        for key in task.keys():
+            if key not in ["id", "name", "description", "done"]:
+                if "done" not in task:
+                    print("    \033[36m" + key + "\033[0m" + ":",  end="")
+                    print("\033[96m" + task[key] + "\033[0m", end="")
+
+        print("\n")
+
+
+list_tasks()
