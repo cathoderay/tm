@@ -25,13 +25,15 @@ Color the task according to the done key
 :done:
 
 task6: write down documentation
-maybe it's too early 
+maybe it's too early.
 :key:value
 :depends_on:task10,task7
+:done:false
 
 task7: syntax highlight
 It would be nice to develop some sort of editor and have syntax highlight.
 Not sure if it's worth the time, though.
+:done:false
 
 task8: make list option the default
 instead of running like: ./tm list, let's make the list option the default
@@ -55,3 +57,10 @@ This is a dummy task to test the topological sorting algorithm.
 task12: build graph based on depends_on key
 Task to finish before task10
 :done:
+
+task13: show only todo tasks
+Only show tasks without "done" key
+:done:
+
+task14: add new tasks
+come up with new features

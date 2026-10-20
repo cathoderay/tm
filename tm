@@ -28,6 +28,16 @@
 import os
 
 
+def print_logo():
+    print("""
+     _         
+    | |_ _____ 
+    |  _|     |
+    |_| |_|_|_|
+    by: Ronald Kaiser
+    """)
+
+
 def list_tasks():
     file_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = file_dir + "/tm.pro"
@@ -52,6 +62,7 @@ def list_tasks():
     for task in tasks:
         if "done" in task:
             a, b = 90, 90
+            continue # do not show done tasks 
         else:
             a, b = 32, 92
         print(f"    \033[{a}m[" + task["id"] + "]\033[0m" + ": ",  end="")
@@ -116,9 +127,13 @@ def build_plan(tasks, graph):
         if not is_task_done(item, tasks):
             i += 1
             print(f"      {i}.", item)
+
+    if i == 0:
+        print("    All done! Congratz!")
+    print()
     return plan
 
-
+print_logo()
 tasks = list_tasks()
 graph = build_graph(tasks)
 plan = build_plan(tasks, graph)
