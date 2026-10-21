@@ -26,12 +26,17 @@
     new ones to work on.
 """
 
+import argparse
 import os
 
 
-def print_task_name(_id, name):
-    print(f"\033[32m --> [" + _id + "]\033[0m" + ": ",  end="")
-    print(f"\033[92m" + name + "\033[0m")
+def print_task_name(_id, name, done):
+    if done:
+        a, b = 90, 90
+    else:
+        a, b = 32, 92
+    print(f"\033[{a}m --> [" + _id + "]\033[0m" + ": ",  end="")
+    print(f"\033[{b}m" + name + "\033[0m")
 
 
 def print_task_description(description):
@@ -41,15 +46,15 @@ def print_task_description(description):
 
 def print_task_key_values(task):
     for key in task.keys():
-        print("    \033[36m" + key + "\033[0m" + ":",  end="")
+        print("     \033[36m" + key + "\033[0m" + ":",  end="")
         print("\033[96m" + task[key] + "\033[0m", end="")
 
 
 def print_tasks_header_footer(func):
-    def wrapper():
-        print("OPEN TASKS".center(50, '-'))
-        result = func()
-        print("".center(50, "-"))
+    def wrapper(*args, **kwargs):
+        print("tasks".center(50, '.'))
+        result = func(*args, **kwargs)
+        print("".center(50, "."))
         return result
     return wrapper
 
@@ -80,26 +85,24 @@ def parse_file():
 
 
 def print_stats(tasks):
+    print()
     to_do = sum(1 for task in tasks if "done" in tasks[task])
     total = len(tasks)
     print(f"\033[36m --> Done: {to_do} / {total}\033[0m")
 
 
 @print_tasks_header_footer
-def list_tasks():
-    tasks = parse_file()
-
+def print_tasks(tasks, ignore_done=True):
     for i, task in enumerate(tasks):
-        if "done" in tasks[task]:
+        if ignore_done and "done" in tasks[task]:
             continue # do not show done tasks 
 
         if i != 0: print()
 
-        print_task_name(task, tasks[task]["name"])
+        print_task_name(task, tasks[task]["name"], done="done" in tasks[task])
         print_task_description(tasks[task]["description"])
         print_task_key_values({key:value for key, value in tasks[task].items() if key not in ["id", "name", "description", "done"]})
 
-    print()
     print_stats(tasks)
  
     return tasks
@@ -119,10 +122,9 @@ def build_graph(tasks):
     return graph
 
 
-def build_plan(tasks, graph):
-    nodes = graph.keys()
+def topological_sort(graph):
+    in_degrees = {node:0 for node in graph} 
 
-    in_degrees = {node: 0 for node in nodes}
     to_process = set()
     for node in graph:
         for u in graph[node]:
@@ -142,7 +144,12 @@ def build_plan(tasks, graph):
             if in_degrees[u] == 0:
                 to_process.add(u)
 
-    print("\033[33m --> Suggested plan:\033[0m")
+    return plan
+
+
+def build_plan(tasks, graph):
+    plan = topological_sort(graph)
+    print("plan".center(50, "."))
     i = 0
     for item in plan:
         if not is_task_done(item, tasks):
@@ -150,12 +157,35 @@ def build_plan(tasks, graph):
             print(f"      {i}.", item)
 
     if i == 0:
-        print("    All done! Congratz! 🎉 ")
-    print()
+        print("All done! Congratz! 🎉 ")
+    print("".center(50, "."))
     return plan
 
 
-print("tm v0.1")
-tasks = list_tasks()
-graph = build_graph(tasks)
-plan = build_plan(tasks, graph)
+def search_tasks(word):
+    tasks = parse_file()
+    to_print = {}
+    for task in tasks:
+        for key, value in tasks[task].items():
+            if word in key or word in value:
+                to_print[task] = tasks[task]
+    print_tasks(to_print, ignore_done=False)
+
+
+print("""
+╋┏┳┓
+┗┛┗┗ v0.1 - by Ronald Kaiser
+""")
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-a", "--all", action="store_true", help="print all tasks")
+parser.add_argument("-s", "--search", type=str, default="", help="search for word")
+args = vars(parser.parse_args())
+if args["search"]:
+    search_tasks(args["search"])
+else:
+    all = args["all"]
+    tasks = parse_file()
+    tasks = print_tasks(tasks, ignore_done=not all)
+    graph = build_graph(tasks)
+    plan = build_plan(tasks, graph)

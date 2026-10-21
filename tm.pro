@@ -91,3 +91,9 @@ task20: implement search
 search for word inside tasks
 :new_feature:search
 :todo:ready
+:done:
+
+task21: highlight search item
+highlight in yellow word found in search
+:new_feature:search
+:todo:ready
