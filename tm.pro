@@ -87,3 +87,5 @@ task19: detect duplicate task id
 raise with custom exception
 :done:
 
+task20: implement search
+search for word inside tasks
