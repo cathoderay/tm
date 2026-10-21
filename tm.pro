@@ -64,3 +64,26 @@ Only show tasks without "done" key
 
 task14: add new tasks
 come up with new features
+note oct 20: this does not add much value; closing
+:done:false
+
+task15: remove logo
+remove logo
+:done:
+
+task16: add stats
+add number of tasks done vs total
+:done:
+
+task17: extract printing functions
+extract printing functions
+:done:
+
+task18: tasks as dictionary
+replace data structure
+:done:
+
+task19: detect duplicate task id
+raise with custom exception
+:done:
+

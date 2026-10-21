@@ -28,70 +28,90 @@
 import os
 
 
-def print_logo():
-    print("""
-     _         
-    | |_ _____ 
-    |  _|     |
-    |_| |_|_|_|
-    by: Ronald Kaiser
-    """)
+def print_task_name(_id, name):
+    print(f"\033[32m --> [" + _id + "]\033[0m" + ": ",  end="")
+    print(f"\033[92m" + name + "\033[0m")
 
 
-def list_tasks():
+def print_task_description(description):
+    for line in description:
+        print("    ", line, end="")
+
+
+def print_task_key_values(task):
+    for key in task.keys():
+        print("    \033[36m" + key + "\033[0m" + ":",  end="")
+        print("\033[96m" + task[key] + "\033[0m", end="")
+
+
+def print_tasks_header_footer(func):
+    def wrapper():
+        print("OPEN TASKS".center(50, '-'))
+        result = func()
+        print("".center(50, "-"))
+        return result
+    return wrapper
+
+
+def parse_file():
     file_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = file_dir + "/tm.pro"
     f = open(file_path)
-    tasks = []
+    tasks = {}
     cur = ""
     for line in f.readlines():
         if len(line) > 1 and not cur:
             cur, name = line.split(":")
-            tasks.append({"id": cur, "name": name.strip(), "description": []})
+            if cur in tasks:
+                raise ValueError(f"task {cur} duplicated")
+            tasks[cur] = { "name": name.strip(), "description": [] }
             continue
 
         if len(line) > 1:
             if line.startswith(":"):
                 _, key, value = line.split(":")
-                tasks[-1][key] = value
+                tasks[cur][key] = value
             else:
-                tasks[-1]["description"].append(line)
+                tasks[cur]["description"].append(line)
         else:
             cur = ""
+    return tasks
 
-    for task in tasks:
-        if "done" in task:
-            a, b = 90, 90
+
+def print_stats(tasks):
+    to_do = sum(1 for task in tasks if "done" in tasks[task])
+    total = len(tasks)
+    print(f"\033[36m --> Done: {to_do} / {total}\033[0m")
+
+
+@print_tasks_header_footer
+def list_tasks():
+    tasks = parse_file()
+
+    for i, task in enumerate(tasks):
+        if "done" in tasks[task]:
             continue # do not show done tasks 
-        else:
-            a, b = 32, 92
-        print(f"    \033[{a}m[" + task["id"] + "]\033[0m" + ": ",  end="")
-        print(f"\033[{b}m" + task["name"] + "\033[0m")
 
-        for line in task["description"]:
-            print("    ", line, end="")
+        if i != 0: print()
 
-        for key in task.keys():
-            if key not in ["id", "name", "description", "done"]:
-                if "done" not in task:
-                    print("    \033[36m" + key + "\033[0m" + ":",  end="")
-                    print("\033[96m" + task[key] + "\033[0m", end="")
+        print_task_name(task, tasks[task]["name"])
+        print_task_description(tasks[task]["description"])
+        print_task_key_values({key:value for key, value in tasks[task].items() if key not in ["id", "name", "description", "done"]})
 
-        print("\n")
+    print()
+    print_stats(tasks)
  
     return tasks
 
 
 def is_task_done(_id, tasks):
-    for task in tasks:
-        if task["id"] == _id:
-            return "done" in task
+    return "done" in tasks[_id]
 
 
 def build_graph(tasks):
-    graph = { task["id"]: [] for task in tasks }
+    graph = { task: [] for task in tasks }
     for task in tasks:
-        _id = task["id"]
+        _id = task
         dependencies = task["depends_on"].strip().split(",") if "depends_on" in task else []
         for dependency in dependencies:
             graph[dependency].append(_id)
@@ -121,7 +141,7 @@ def build_plan(tasks, graph):
             if in_degrees[u] == 0:
                 to_process.add(u)
 
-    print("    \033[33mSuggested plan:\033[0m")
+    print("\033[33m --> Suggested plan:\033[0m")
     i = 0
     for item in plan:
         if not is_task_done(item, tasks):
@@ -129,11 +149,12 @@ def build_plan(tasks, graph):
             print(f"      {i}.", item)
 
     if i == 0:
-        print("    All done! Congratz!")
+        print("    All done! Congratz! 🎉 ")
     print()
     return plan
 
-print_logo()
+
+print("tm v0.1")
 tasks = list_tasks()
 graph = build_graph(tasks)
 plan = build_plan(tasks, graph)
