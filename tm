@@ -17,7 +17,8 @@
     After the description you can put some key value pairs, e.g.:
         task1: short description
         Multiline description
-        key:value
+        :key:value
+        :key2:value2
     
     There's a special key called :done: that you can assign any value.
     When you run tm, it will properly highlight tasks without this key.

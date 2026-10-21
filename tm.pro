@@ -89,3 +89,5 @@ raise with custom exception
 
 task20: implement search
 search for word inside tasks
+:new_feature:search
+:todo:ready
