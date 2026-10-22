@@ -179,7 +179,7 @@ def search_tasks(word):
                 for item in value:
                     if word in item:
                         to_print[task] = tasks[task]
-                        continue
+                        break
             else:
                 if word in value:
                     to_print[task] = tasks[task]
