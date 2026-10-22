@@ -97,3 +97,7 @@ task21: highlight search item
 highlight in yellow word found in search
 :new_feature:search
 :todo:ready
+
+task22: improve docstring
+rewrite docstring with usage examples
+:todo:ready

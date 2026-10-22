@@ -54,7 +54,6 @@ def print_tasks_header_footer(func):
     def wrapper(*args, **kwargs):
         print("tasks".center(50, '.'))
         result = func(*args, **kwargs)
-        print("".center(50, "."))
         return result
     return wrapper
 
@@ -97,8 +96,6 @@ def print_tasks(tasks, ignore_done=True):
         if not ignore_done and "done" in tasks[task]:
             continue # do not show done tasks 
 
-        if i != 0: print()
-
         print_task_name(task, tasks[task]["name"], done="done" in tasks[task])
         print_task_description(tasks[task]["description"])
         print_task_key_values(
@@ -108,6 +105,7 @@ def print_tasks(tasks, ignore_done=True):
                 if key not in ["id", "name", "description", "done"]
             }
         )
+        print()
 
     print_stats(tasks)
  
@@ -178,10 +176,11 @@ def search_tasks(word):
     print_tasks(to_print, ignore_done=True)
 
 
-print("""
-╋┏┳┓
-┗┛┗┗ v0.1 - by Ronald Kaiser
-""")
+print("""\033[35m
+░▀█▀░█▄█
+░░█░░█░█
+░░▀░░▀░▀ v0.1
+\033[0m""")
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-a", "--all", action="store_true", help="print all tasks")
