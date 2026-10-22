@@ -5,25 +5,37 @@
 
     author: Ronald Kaiser
     date: Oct 18, 2026
+    updated: Oct 22, 2026
 
-    This is a piece of code that prints your .pro file with highlights.
-    The idea is to write down the tasks of a project
-    in a .pro file.
+    This is a script that processes the tm.pro file within the same directory.
 
-    The tasks should start with the following format:
-        task1: short description
-        Multiline description
+    The idea is to write down your tasks in the tm.pro and run some analysis
+    with this script.
+
+    The tm.pro file lists all your tasks with the following structure:
+
+        tm.pro content:
+            [task1]: [short task name]
+            [task description in a multiline string.
+             This is the second line of the description]
+            [:key1:value1]
+            [:key2:value2]
+
+            [task2]: [short task name]
+            [task description in a multiline string.]
+            [:key1:value1]
+            [:key2:value2]
+            [:depends_on:task1]
+            ...
     
-    After the description you can put some key value pairs, e.g.:
-        task1: short description
-        Multiline description
-        :key:value
-        :key2:value2
-    
-    There's a special key called :done: that you can assign any value.
-    When you run tm, it will properly highlight tasks without this key.
-    This way you can easily identify all your to-do tasks and find
-    new ones to work on.
+    Some of the features that already work (see tm.pro for examples):
+    1. Add Key value pairs to each task
+        * add them after the task description
+    2. Order of execution plan suggestion:
+        * each task can have a list of dependencies
+        * based on that, this script suggests a plan of execution
+    3. Search:
+        * run it like `tm --search word`
 """
 
 import argparse

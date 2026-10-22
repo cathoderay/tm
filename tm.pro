@@ -101,6 +101,7 @@ highlight in yellow word found in search
 task22: improve docstring
 rewrite docstring with usage examples
 :todo:ready
+:done:
 
 task23: search inside multiline description
 search is not working in multiline description
