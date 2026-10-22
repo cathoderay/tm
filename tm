@@ -191,6 +191,9 @@ def search_tasks(word):
     tasks = parse_file()
     to_print = {}
     for task in tasks:
+        if word in task:
+            to_print[task] = tasks[task]
+            continue
         for key, value in tasks[task].items():
             if word in key:
                 to_print[task] = tasks[task]
