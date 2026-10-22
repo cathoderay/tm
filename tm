@@ -169,7 +169,7 @@ def search_tasks(word):
         for key, value in tasks[task].items():
             if word in key or word in value:
                 to_print[task] = tasks[task]
-    print_tasks(to_print, ignore_done=False)
+    print_tasks(to_print, ignore_done=True)
 
 
 print("""
