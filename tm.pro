@@ -109,3 +109,7 @@ search is not working in multiline description
 
 task24: refactor
 improve abstractions and legibility
+
+task25: detect cycle
+tasks that depend on each other should be avoided
+:done:

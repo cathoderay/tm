@@ -160,11 +160,18 @@ def topological_sort(graph):
             if in_degrees[u] == 0:
                 to_process.add(u)
 
+    if len(plan) < len(in_degrees):
+        raise ValueError # cycle detected
     return plan
 
 
 def build_plan(tasks, graph):
-    plan = topological_sort(graph)
+    try:
+        plan = topological_sort(graph)
+    except ValueError:
+        print("\n 🔴 CYCLE DETECTED! Some tasks depend on each other\n")
+        return
+
     print("plan".center(50, "."))
     i = 0
     for item in plan:
