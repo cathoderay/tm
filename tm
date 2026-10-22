@@ -92,6 +92,7 @@ def print_stats(tasks):
 
 @print_tasks_header_footer
 def print_tasks(tasks, ignore_done=True):
+    print()
     for i, task in enumerate(tasks):
         if not ignore_done and "done" in tasks[task]:
             continue # do not show done tasks 
@@ -171,8 +172,17 @@ def search_tasks(word):
     to_print = {}
     for task in tasks:
         for key, value in tasks[task].items():
-            if word in key or word in value:
+            if word in key:
                 to_print[task] = tasks[task]
+                continue
+            if isinstance(value, list):
+                for item in value:
+                    if word in item:
+                        to_print[task] = tasks[task]
+                        continue
+            else:
+                if word in value:
+                    to_print[task] = tasks[task]
     print_tasks(to_print, ignore_done=True)
 
 
