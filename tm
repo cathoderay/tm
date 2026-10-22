@@ -94,7 +94,7 @@ def print_stats(tasks):
 @print_tasks_header_footer
 def print_tasks(tasks, ignore_done=True):
     for i, task in enumerate(tasks):
-        if ignore_done and "done" in tasks[task]:
+        if not ignore_done and "done" in tasks[task]:
             continue # do not show done tasks 
 
         if i != 0: print()
@@ -186,6 +186,6 @@ if args["search"]:
 else:
     all = args["all"]
     tasks = parse_file()
-    tasks = print_tasks(tasks, ignore_done=not all)
+    tasks = print_tasks(tasks, ignore_done=all)
     graph = build_graph(tasks)
     plan = build_plan(tasks, graph)
