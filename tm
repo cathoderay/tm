@@ -45,9 +45,11 @@ import os
 def print_task_name(_id, name, done):
     if done:
         a, b = 90, 90
+        sign = "✓"
     else:
         a, b = 32, 92
-    print(f"\033[{a}m --> [" + _id + "]\033[0m" + ": ",  end="")
+        sign = "🟢"
+    print(f"    {sign}\033[{a}m [" + _id + "]\033[0m" + ": ",  end="")
     print(f"\033[{b}m" + name + "\033[0m")
 
 
