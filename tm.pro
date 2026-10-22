@@ -105,3 +105,6 @@ rewrite docstring with usage examples
 task23: search inside multiline description
 search is not working in multiline description
 :done:
+
+task24: refactor
+improve abstractions and legibility
