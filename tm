@@ -119,8 +119,8 @@ def is_task_done(_id, tasks):
 
 def build_graph(tasks):
     graph = { task: [] for task in tasks }
-    for task in tasks:
-        dependencies = tasks[task]["depends_on"].strip().split(",") if "depends_on" in tasks[task] else []
+    for task, item in tasks.items():
+        dependencies = item["depends_on"].strip().split(",") if "depends_on" in item else []
         for dependency in dependencies:
             graph[dependency].append(task)
     return graph
