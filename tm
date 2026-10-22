@@ -117,7 +117,7 @@ def print_tasks(tasks, ignore_done=True):
             {
                 key:value
                 for key, value in tasks[task].items()
-                if key not in ["id", "name", "description", "done"]
+                if key not in ["id", "name", "description"]
             }
         )
         print()

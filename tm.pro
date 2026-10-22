@@ -113,3 +113,6 @@ improve abstractions and legibility
 task25: detect cycle
 tasks that depend on each other should be avoided
 :done:
+
+task26: add tests
+add tests covering basic features
