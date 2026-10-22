@@ -101,7 +101,13 @@ def print_tasks(tasks, ignore_done=True):
 
         print_task_name(task, tasks[task]["name"], done="done" in tasks[task])
         print_task_description(tasks[task]["description"])
-        print_task_key_values({key:value for key, value in tasks[task].items() if key not in ["id", "name", "description", "done"]})
+        print_task_key_values(
+            {
+                key:value
+                for key, value in tasks[task].items()
+                if key not in ["id", "name", "description", "done"]
+            }
+        )
 
     print_stats(tasks)
  
