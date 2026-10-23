@@ -45,7 +45,7 @@ import os
 def print_task_name(_id, name, done):
     if done:
         a, b = 90, 90
-        sign = "✓"
+        sign = "☑️"
     else:
         a, b = 32, 92
         sign = "🟢"
