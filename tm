@@ -38,6 +38,7 @@
         * run it like `tm --search word`
 """
 
+
 import argparse
 import os
 
@@ -48,6 +49,7 @@ GRAY       = "\033[90m"
 GREEN      = "\033[32m"
 GREEN_BOLD = "\033[92m"
 END        = "\033[0m"
+LINE_WIDTH = 100
 
 
 def print_task_name(_id, name, done):
@@ -62,7 +64,7 @@ def print_task_name(_id, name, done):
 
 def print_task_description(description):
     for line in description:
-        print("    ", line, end="")
+        print("    ", line.strip())
 
 
 def print_task_key_values(task):
@@ -74,7 +76,7 @@ def print_task_key_values(task):
 
 def print_tasks_header_footer(func):
     def wrapper(*args, **kwargs):
-        print("tasks".center(50, '.'))
+        print(f"{CYAN}tasks{END}".center(LINE_WIDTH, '.'))
         result = func(*args, **kwargs)
         return result
     return wrapper
@@ -109,9 +111,12 @@ def print_stats(tasks):
     print()
     done = sum(1 for task in tasks if "done" in tasks[task])
     total = len(tasks)
-    full = int(((done) / total) * 20)
-    empty = 20 - full
-    print(f"    📊 {CYAN_BOLD}Done: " + GREEN + "█"*full + "░"*empty + f"{END}{CYAN} {round(done/total, 3)*100}% ({done} / {total}){END}")
+    if total == 0:
+        return
+    n = 50
+    full = int(((done) / total) * n)
+    empty = n - full
+    print(f"    📊 {CYAN_BOLD}Progress: " + GRAY + "█"*full + "░"*empty + f"{END}{CYAN} {done} / {total} ({round(done/total, 3)*100}%){END}\n")
 
 
 @print_tasks_header_footer
@@ -133,7 +138,6 @@ def print_tasks(tasks, ignore_done=True):
         print()
 
     print_stats(tasks)
- 
     return tasks
 
 
@@ -184,7 +188,7 @@ def build_plan(tasks, graph):
         print("\n 🔴 CYCLE DETECTED! Some tasks depend on each other\n")
         return
 
-    print("plan".center(50, "."))
+    print(f"{CYAN}plan{END}".center(LINE_WIDTH, "."))
     i = 0
     for item in plan:
         if not is_task_done(item, tasks):
@@ -193,7 +197,6 @@ def build_plan(tasks, graph):
 
     if i == 0:
         print("All done! Congratz! 🎉 ")
-    print("".center(50, "."))
     return plan
 
 
