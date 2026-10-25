@@ -79,6 +79,7 @@ def print_tasks_header_footer(func):
     def wrapper(*args, **kwargs):
         print(f"{CYAN}tasks{END}".center(LINE_WIDTH, '.'))
         result = func(*args, **kwargs)
+        print_stats(result)
         return result
     return wrapper
 
@@ -155,7 +156,6 @@ def print_tasks(tasks, ignore_done=True, highlight_word=None):
         print_task_key_values(key_values)
         print()
 
-    print_stats(tasks)
     return tasks
 
 
