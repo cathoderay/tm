@@ -201,7 +201,7 @@ def build_and_print_plan(tasks):
     return plan
 
 
-def search_tasks(word, tasks):
+def search_tasks_and_print_result(word, tasks):
     to_print = {}
     for task in tasks:
         if word in task:
@@ -242,7 +242,7 @@ if __name__ == "__main__":
     tasks = parse_file()
     word = args["search"]
     if word:
-        search_tasks(word, tasks)
+        search_tasks_and_print_result(word, tasks)
     else:
         print_tasks(tasks, ignore_done=args["all"])
         build_and_print_plan(tasks)
