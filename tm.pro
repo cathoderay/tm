@@ -110,6 +110,8 @@ search is not working in multiline description
 
 task24: refactor
 improve abstractions and legibility
+note: this is too generic.
+:done:false
 
 task25: detect cycle
 tasks that depend on each other should be avoided
