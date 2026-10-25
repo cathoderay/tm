@@ -116,7 +116,7 @@ def print_stats(tasks):
     n = 50
     full = int(((done) / total) * n)
     empty = n - full
-    print(f"    📊 {CYAN_BOLD}Progress: " + GRAY + "█"*full + "░"*empty + f"{END}{CYAN} {done} / {total} ({round(done/total, 3)*100}%){END}\n")
+    print(f"    📊 {CYAN_BOLD}Progress: " + GREEN + "█"*full + END + GRAY + "░"*empty + f"{END}{CYAN} {done} / {total} ({round(done/total, 2)*100}%){END}\n")
 
 
 @print_tasks_header_footer
@@ -223,7 +223,8 @@ def search_tasks(word):
     print_tasks(to_print, ignore_done=True)
 
 
-print(f"""{CYAN}
+if __name__ == "__main__":
+    print(f"""{CYAN}
    ░██                    
    ░██                    
 ░████████ ░█████████████  
@@ -234,15 +235,15 @@ print(f"""{CYAN}
   v0.1 - by Ronald Kaiser
 {END}""")
 
-parser = argparse.ArgumentParser()
-parser.add_argument("-a", "--all", action="store_true", help="print all tasks")
-parser.add_argument("-s", "--search", type=str, default="", help="search for word")
-args = vars(parser.parse_args())
-if args["search"]:
-    search_tasks(args["search"])
-else:
-    all = args["all"]
-    tasks = parse_file()
-    tasks = print_tasks(tasks, ignore_done=all)
-    graph = build_graph(tasks)
-    plan = build_plan(tasks, graph)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-a", "--all", action="store_true", help="print all tasks")
+    parser.add_argument("-s", "--search", type=str, default="", help="search for word")
+    args = vars(parser.parse_args())
+    if args["search"]:
+        search_tasks(args["search"])
+    else:
+        all = args["all"]
+        tasks = parse_file()
+        tasks = print_tasks(tasks, ignore_done=all)
+        graph = build_graph(tasks)
+        plan = build_plan(tasks, graph)
