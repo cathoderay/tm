@@ -200,8 +200,7 @@ def build_plan(tasks, graph):
     return plan
 
 
-def search_tasks(word):
-    tasks = parse_file()
+def search_tasks(word, tasks):
     to_print = {}
     for task in tasks:
         if word in task:
@@ -239,11 +238,11 @@ if __name__ == "__main__":
     parser.add_argument("-a", "--all", action="store_true", help="print all tasks")
     parser.add_argument("-s", "--search", type=str, default="", help="search for word")
     args = vars(parser.parse_args())
+    tasks = parse_file()
     if args["search"]:
-        search_tasks(args["search"])
+        search_tasks(args["search"], tasks)
     else:
         all = args["all"]
-        tasks = parse_file()
         tasks = print_tasks(tasks, ignore_done=all)
         graph = build_graph(tasks)
         plan = build_plan(tasks, graph)
