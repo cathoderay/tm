@@ -181,7 +181,8 @@ def topological_sort(graph):
     return plan
 
 
-def build_plan(tasks, graph):
+def build_and_print_plan(tasks):
+    graph = build_graph(tasks)
     try:
         plan = topological_sort(graph)
     except ValueError:
@@ -239,10 +240,9 @@ if __name__ == "__main__":
     parser.add_argument("-s", "--search", type=str, default="", help="search for word")
     args = vars(parser.parse_args())
     tasks = parse_file()
-    if args["search"]:
-        search_tasks(args["search"], tasks)
+    word = args["search"]
+    if word:
+        search_tasks(word, tasks)
     else:
-        all = args["all"]
-        tasks = print_tasks(tasks, ignore_done=all)
-        graph = build_graph(tasks)
-        plan = build_plan(tasks, graph)
+        print_tasks(tasks, ignore_done=args["all"])
+        build_and_print_plan(tasks)
