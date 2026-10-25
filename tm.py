@@ -72,7 +72,7 @@ def print_task_key_values(task):
     key_color = CYAN_BOLD
     value_color = CYAN
     for key in task.keys():
-        print(f"     {key_color}{key}{END}: {value_color}{task[key].strip()}{END}")
+        print(f"     {key_color}{key}{END}:{value_color}{task[key].strip()}{END}")
 
 
 def print_tasks_header_footer(func):
@@ -120,19 +120,24 @@ def print_stats(tasks):
     print(f"    📊 {CYAN_BOLD}Progress: " + GREEN + "█"*full + END + GRAY + "░"*empty + f"{END}{CYAN} {done} / {total} ({round(done/total, 2)*100}%){END}\n")
 
 
+def highlight(text, word):
+    return text.replace(word, f"{ORANGE_BOLD}{word}{END}")
+
+
 @print_tasks_header_footer
-def print_tasks(tasks, ignore_done=True, highlight=None):
+def print_tasks(tasks, ignore_done=True, highlight_word=None):
     print()
     for i, task in enumerate(tasks):
         if not ignore_done and "done" in tasks[task]:
             continue # do not show done tasks 
 
-        if highlight:
-            _id = task.replace(highlight, f"{ORANGE_BOLD}{highlight}{END}")
-            name = tasks[task]["name"].replace(highlight, f"{ORANGE_BOLD}{highlight}{END}")
-            description = [line.replace(highlight, f"{ORANGE_BOLD}{highlight}{END}") for line in tasks[task]["description"]]
+        if highlight_word:
+            word = highlight_word
+            _id = highlight(task, word)
+            name = highlight(tasks[task]["name"], word)
+            description = [highlight(line, word) for line in tasks[task]["description"]]
             key_values = {
-                key.replace(highlight, f"{ORANGE_BOLD}{highlight}{END}"):value.replace(highlight, f"{ORANGE_BOLD}{highlight}{END}")
+                highlight(key, word):highlight(value, word)
                 for key, value in tasks[task].items()
                 if key not in ["id", "name", "description"]
             }
@@ -233,7 +238,7 @@ def search_tasks_and_print_result(word, tasks):
                 if word in value:
                     to_print[task] = tasks[task]
 
-    print_tasks(to_print, ignore_done=True, highlight=word)
+    print_tasks(to_print, ignore_done=True, highlight_word=word)
 
 
 if __name__ == "__main__":
