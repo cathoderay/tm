@@ -42,15 +42,22 @@ import argparse
 import os
 
 
+CYAN       = "\033[36m"
+CYAN_BOLD  = "\033[96m"
+GRAY       = "\033[90m"
+GREEN      = "\033[32m"
+GREEN_BOLD = "\033[92m"
+END        = "\033[0m"
+
+
 def print_task_name(_id, name, done):
+    id_color = GREEN
+    name_color = GREEN_BOLD
+    sign = "🟢"
     if done:
-        a, b = 90, 90
+        id_color = name_color = GRAY
         sign = "☑️"
-    else:
-        a, b = 32, 92
-        sign = "🟢"
-    print(f"    {sign}\033[{a}m [" + _id + "]\033[0m" + ": ",  end="")
-    print(f"\033[{b}m" + name + "\033[0m")
+    print(f"    {sign} {id_color}[{_id}]{END}: {name_color}{name}{END}")
 
 
 def print_task_description(description):
@@ -59,9 +66,10 @@ def print_task_description(description):
 
 
 def print_task_key_values(task):
+    key_color = CYAN_BOLD
+    value_color = CYAN
     for key in task.keys():
-        print("     \033[36m" + key + "\033[0m" + ":",  end="")
-        print("\033[96m" + task[key] + "\033[0m", end="")
+        print(f"     {key_color}{key}{END}: {value_color}{task[key].strip()}{END}")
 
 
 def print_tasks_header_footer(func):
@@ -99,9 +107,11 @@ def parse_file():
 
 def print_stats(tasks):
     print()
-    to_do = sum(1 for task in tasks if "done" in tasks[task])
+    done = sum(1 for task in tasks if "done" in tasks[task])
     total = len(tasks)
-    print(f"\033[36m --> Done: {to_do} / {total}\033[0m")
+    full = int(((done) / total) * 20)
+    empty = 20 - full
+    print(f"    📊 {CYAN_BOLD}Done: " + GREEN + "█"*full + "░"*empty + f"{END}{CYAN} {round(done/total, 3)*100}% ({done} / {total}){END}")
 
 
 @print_tasks_header_footer
@@ -206,16 +216,20 @@ def search_tasks(word):
             else:
                 if word in value:
                     to_print[task] = tasks[task]
+
     print_tasks(to_print, ignore_done=True)
 
 
-print("""\033[35m
-████████ ███    ███ 
-   ██    ████  ████ 
-   ██    ██ ████ ██ 
-   ██    ██  ██  ██ 
-   ██    ██      ██ v.0.1
-\033[0m""")
+print(f"""{CYAN}
+   ░██                    
+   ░██                    
+░████████ ░█████████████  
+   ░██    ░██   ░██   ░██ 
+   ░██    ░██   ░██   ░██ 
+   ░██    ░██   ░██   ░██ 
+    ░████ ░██   ░██   ░██ 
+  v0.1 - by Ronald Kaiser
+{END}""")
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-a", "--all", action="store_true", help="print all tasks")
