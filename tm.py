@@ -86,26 +86,28 @@ def print_tasks_header_footer(func):
 
 def parse_file():
     file_dir = os.path.dirname(os.path.abspath(__file__))
-    file_path = file_dir + "/tm.pro"
-    f = open(file_path)
+    files = filter(lambda x: x.endswith(".pro"), os.listdir(file_dir))
     tasks = {}
-    cur = ""
-    for line in f.readlines():
-        if len(line) > 1 and not cur:
-            cur, name = line.split(":")
-            if cur in tasks:
-                raise ValueError(f"task {cur} duplicated")
-            tasks[cur] = { "name": name.strip(), "description": [] }
-            continue
+    for file in files:
+        file_path = file_dir + "/" + file 
+        f = open(file_path)
+        cur = ""
+        for line in f.readlines():
+            if len(line) > 1 and not cur:
+                cur, name = line.split(":")
+                if cur in tasks:
+                    raise ValueError(f"task {cur} duplicated")
+                tasks[cur] = { "name": name.strip(), "description": [] }
+                continue
 
-        if len(line) > 1:
-            if line.startswith(":"):
-                _, key, value = line.split(":")
-                tasks[cur][key] = value
+            if len(line) > 1:
+                if line.startswith(":"):
+                    _, key, value = line.split(":")
+                    tasks[cur][key] = value
+                else:
+                    tasks[cur]["description"].append(line)
             else:
-                tasks[cur]["description"].append(line)
-        else:
-            cur = ""
+                cur = ""
     return tasks
 
 

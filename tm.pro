@@ -120,3 +120,7 @@ tasks that depend on each other should be avoided
 task26: add tests
 add tests covering basic features
 :done:
+
+task27: read from all .pro files
+agreggate all tasks from different .pro files
+:done:
