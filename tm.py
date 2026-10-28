@@ -7,7 +7,7 @@
     date: Oct 18, 2026
     updated: Oct 22, 2026
 
-    This is a script that processes the tm.pro file within the same directory.
+    This is a script that processes .pro files within the same directory.
 
     The idea is to write down your tasks in the tm.pro and run some analysis
     with this script.
